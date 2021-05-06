@@ -28,6 +28,7 @@ fi
 cp run/submit.sh $PANTHEON_RUN_DIR
 # copy new actions file
 cp inputs/ascent/ascent_actions.yaml $PANTHEON_RUN_DIR
+cp inputs/cloverleaf3d/* $PANTHEON_RUN_DIR
 
 # END: EDIT THIS SECTION
 # --------------------------------------------------------------------
