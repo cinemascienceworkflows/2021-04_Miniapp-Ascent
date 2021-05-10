@@ -1,4 +1,7 @@
 spack:
+  repos:
+  - $spack/var/spack/repos/pantheon
+  - $spack/var/spack/repos/builtin
   view: false
   concretization: separately
   specs:
@@ -69,7 +72,7 @@ spack:
       providers: {}
     ascent:
       variants: +openmp+shared~adios~mfem+fortran+test~python+serial+mpi~cuda+vtkh
-      version: [0.7.0]
+      version: [pantheon_ver]
       target: []
       compiler: []
       buildable: true

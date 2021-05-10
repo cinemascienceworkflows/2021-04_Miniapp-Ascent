@@ -74,6 +74,8 @@ if $INSTALL_ASCENT; then
     # copy spack settings
     module load gcc/6.4.0
     cp inputs/spack/spack.yaml $PANTHEON_WORKFLOW_DIR
+    # custom ascent spack file to pin at commit hash
+    cp -r inputs/spack/pantheon $PANTHEON_WORKFLOW_DIR/spack/var/spack/repos/pantheon
 
     pushd $PANTHEON_WORKFLOW_DIR > /dev/null 2>&1
     # set compiler paths for spac
