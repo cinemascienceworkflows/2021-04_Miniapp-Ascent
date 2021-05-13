@@ -18,7 +18,6 @@ pushd cinema_databases  > /dev/null 2>&1
 module load python/3.7.0-anaconda3-5.3.0
 ./cisconvert --verbose --input ../ --output pantheon.cdb
     # clean up
-rm -rf cinemasci
 rm -f  cisconvert
 popd > /dev/null 2>&1
 
