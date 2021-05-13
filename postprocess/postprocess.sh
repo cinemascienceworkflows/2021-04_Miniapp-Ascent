@@ -2,9 +2,6 @@
 
 source ./pantheon/env.sh > /dev/null 2>&1
 
-echo "----------------------------------------------------------------------"
-echo "PTN: Post-processing" 
-echo "     packaging up cinema database to:" 
 
 # make the cinema data directory 
 mkdir $PANTHEON_RUN_DIR/cinema_databases
@@ -24,6 +21,10 @@ module load python/3.7.0-anaconda3-5.3.0
 rm -rf cinemasci
 rm -f  cisconvert
 popd > /dev/null 2>&1
+
+echo "----------------------------------------------------------------------"
+echo "PTN: Post-processing" 
+echo "     packaging up cinema database to:" 
 
 # bundle up the results
 TARNAME=cinema_databases
