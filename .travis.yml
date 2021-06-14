@@ -1,0 +1,27 @@
+language: cpp
+
+# Notification settings
+notifications:
+  email:
+    recipients:
+      - ethan.stam@gmail.com
+      - dhr@lanl.gov
+
+# Get the repository
+git:
+  # Depth of commits to grab. Less is faster
+  depth: 1
+
+# Matrix of operating systems and dependencies
+matrix:
+  include:
+    - os: linux
+      arch: ppc64le
+
+# Install dependencies here      
+install:
+
+# The build step
+script:
+    - echo "Placeholder: edit setup files like bootstrap.env"
+    - echo "Placeholder: run"
