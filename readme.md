@@ -1,14 +1,14 @@
 ![release](https://pantheonscience.github.io/states/release.png)
 
-# Pantheon/E4S/Ascent in-situ miniapp example workflow
+# Cinema Composable Image Set (CIS) output example 
 
 <p align="center">
 <img width="750" src="doc/img/diagram.png"/>
 </p>
 <p align="center">Diagram of workflow in this example.</p>
 
-A repository for examples using `Ascent`, in-situ creation of `Cinema`
-databases, and post-processing analysis. 
+A repository for examples using `Ascent`, in-situ creation of float data, converted to `Cinema CIS`
+databases, and verification. 
 
 Build instructions embedded in this workflow are derived from the Ascent build instructions [here](https://ascent.readthedocs.io/en/latest/BuildingAscent.html). This workflow uses **spack** to build all executables, from a specific commit.
 
@@ -19,9 +19,9 @@ to speed up the build/install of requisite applications. If no cached builds are
 <p align="center">
 <table>
 <tr>
-<td><img width="200" src="validate/data/cloverleaf3d_001.cdb/0.0/0.0_0.0_pantheon.cdb.png"</td>
-<td><img width="200" src="validate/data/cloverleaf3d_001.cdb/2.0/0.0_0.0_pantheon.cdb.png"</td>
-<td><img width="200" src="validate/data/cloverleaf3d_001.cdb/5.0/0.0_0.0_pantheon.cdb.png"</td>
+<td><img width="200" src="doc/img/010.png"></td>
+<td><img width="200" src="doc/img/100.png"></td>
+<td><img width="200" src="doc/img/200.png"></td>
 </tr>
 </table>
 </p>
@@ -32,8 +32,9 @@ The workflow does the following:
 - Creates a [Pantheon](http://pantheonscience.org/) environment and build location
 - Clones a specific commit of [Spack](https://github.com/spack/spack)
 - Uses `spack` to build [Ascent](https://ascent.readthedocs.io/en/latest/) and set up a coupled app/in-situ workflow
-- Runs the workflow to produce a [Cinema](https://cinemascience.org) database
-- Adds a `Cinema` viewer, and packages up the results.
+- Runs the workflow to produce float images 
+- Converts the output to a [Cinema CIS](https://cinemascience.org) database
+- Adds a `Cinema` viewer and a jupyter notebook viewer, and packages up the results.
 - Verifies the `Cinema` database
 
 ## Using this repository
