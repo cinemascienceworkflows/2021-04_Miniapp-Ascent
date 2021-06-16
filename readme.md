@@ -1,6 +1,6 @@
 ![release](https://pantheonscience.github.io/states/release.png)
 
-# Cinema Composable Image Set (CIS) output example 
+# Cinema Composable Image Set (CIS) example 
 
 <p align="center">
 <img width="750" src="doc/img/diagram.png"/>
