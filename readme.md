@@ -22,7 +22,7 @@ of components released as part of the `cinemasci` python module.
 <p align="center">
 <img width="500" src="doc/img/ascent-cis-images.png"/>
 </p>
-<p align="center">Images from the resulting Cinema database (used to validate run)</p>
+<p align="center">Images from the resulting Cinema database, shown in a jupyter notebook.</p>
 
 ## Using this repository
 
