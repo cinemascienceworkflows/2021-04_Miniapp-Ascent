@@ -57,7 +57,7 @@ if args.verbose:
     print("    inputdir : {}".format(args.input))
     print("    outputcdb: {}".format(args.output))
 
-converter = cinemasci.cis.convert.ascent()
+converter = cinemasci.cis.convert.ascent.ascent()
 converter.convert(args.input, args.output)
 
 if args.verbose:
