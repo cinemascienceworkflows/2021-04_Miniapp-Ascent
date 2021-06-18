@@ -8,11 +8,25 @@ import os
 #
 class imageview:
     """ImageView Class
+
     A collection of settings that define a specific way of compositing the
     elements of an image. Once it is set up, the imageview's layers can
     be iterated over to return an order-dependent set of data plus colormaps
     that can be composited.
     """
+
+    @property
+    def background(self):
+        return self._background
+
+    @background.setter
+    def background(self, color):
+        # TODO check type of color
+        if (len(color) == 3) and (all(isinstance(value, (float, int)) for value in color)):
+            self._background = color
+        else:
+            print("ERROR: color arg must be three values, each either an int or float") 
+            self._background = [0.0, 0.0, 0.0]
 
     @property
     def use_depth(self):
@@ -73,10 +87,12 @@ class imageview:
     def __init__(self, cview):
         self.active_layers = []
         self.active_channels = {} 
+            # a CIS view of a cinema database
         self.cisview = cview
         self.data = {}
-        self._use_depth = False
-        self._use_shadow = False
+        self.use_depth = False
+        self.use_shadow = False
+        self.background = [0.0, 0.0, 0.0]
 
     def get_active_layers(self):
         return self.active_layers
@@ -89,7 +105,7 @@ class imageview:
         if layer in self.active_layers:
             self.active_layers.remove(layer)
 
-    def __is_active_layer(self, layer):
+    def is_active_layer(self, layer):
         return layer in self.active_layers
 
     #
@@ -98,7 +114,7 @@ class imageview:
     def activate_channel(self, layer, channel):
         self.active_channels[layer] = channel
 
-    def get_layer_data(self, layer):
+    def get_active_channel_data(self, layer):
         channel = self.get_active_channel(layer) 
         data = self.cisview.get_image(self.image).get_layer(layer).get_channel(channel).data
         return data 
@@ -165,10 +181,15 @@ class imageview:
             # load the shadow map
             if self.use_shadow:
                 extract = self.cisview.get_channel_extract(self.image, l, "CISShadow") 
-                newchannel = channel.channel()
-                newchannel.name = "CISShadow"
-                newchannel.load(extract[0])
-                newchannel.shadow = newchannel
+                # did the data load?
+                # this is equivalent to asking if the channel is there
+                # TODO: find a better way to express requesting a load, but getting
+                #       no data, i.e. the channel is not there
+                if extract:
+                    newchannel = channel.channel()
+                    newchannel.name = "CISShadow"
+                    newchannel.load(extract[0])
+                    newlayer.shadow = newchannel
 
     def get_layer_data(self):
         return self.data
@@ -177,6 +198,7 @@ class imageview:
         # return a default gray colormap if nothing else
         colormap = {
                     "colorspace" : "rgb",
+                    "name" : "default",
                     "points" : [{'x': 0.0, 'r': 0.0, 'g': 0.0, 'b': 0.0, 'a': 1.0},
                                 {'x': 1.0, 'r': 1.0, 'g': 1.0, 'b': 1.0, 'a': 1.0},
                                ]
@@ -186,7 +208,8 @@ class imageview:
             # for now, parse as a local file
             # TODO: add logic to detect and load remote URLs
             if params["type"] is "url":
-                # this path is currently required to be local to the cdb
+                # this path is currently required to be a ParaView json colormap
+                # local to the cinema database 
                 fullpath = os.path.join(self.cisview.cdb.path, params["url"])
 
                 colormap["colorspace"] = "rgb"

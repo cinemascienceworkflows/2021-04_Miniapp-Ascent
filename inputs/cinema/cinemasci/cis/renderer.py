@@ -3,6 +3,10 @@ from scipy.interpolate import interp1d
 
 
 class Renderer:
+    """Cinema CIS Renderer 
+
+    Class that renders a CIS image
+    """
 
     def __init__(self):
         return
@@ -11,7 +15,7 @@ class Renderer:
     # large enough.
     @staticmethod
     def paste(dest, src, offset):
-        ends = offset + src.shape
+        ends = np.array(offset) + np.array(src.shape[0:1])
         dest[offset[0]:ends[0], offset[1]:ends[1], :] = src
         return dest
 
@@ -20,9 +24,13 @@ class Renderer:
     def color(scalars, colormap):
         cmap_fn, values = Renderer.make_rgb_colormap(colormap)
         # rescale scalars to be within the range of the colormap
-        scalars = (scalars - np.nanmin(scalars)) / \
-                  (np.nanmax(scalars) - np.nanmin(scalars))
-        scalars = values.min() + scalars * (values.max() - values.min())
+        if np.nanmin(scalars) == np.nanmax(scalars):
+            # prevent divide by zero when scalars are the same values.
+            scalars = values.min()
+        else:
+            scalars = (scalars - np.nanmin(scalars)) / \
+                      (np.nanmax(scalars) - np.nanmin(scalars))
+            scalars = values.min() + scalars * (values.max() - values.min())
         return cmap_fn(scalars)
 
     @staticmethod
@@ -54,23 +62,38 @@ class Renderer:
     def render(iview):
 
         # FXIME: this assumes RGB rather than RGBA color
-        canvas = np.zeros((iview.dims[0], iview.dims[1], 3), float)
-        depth = np.ones((iview.dims[0], iview.dims[1])) * np.inf
+        canvas = np.full((iview.dims[0], iview.dims[1], 3), iview.background,
+                         float)
+        depth = np.full((iview.dims[0], iview.dims[1]), np.inf, float)
 
         # TODO: how to make use of 'origin'?
         layers = iview.get_layer_data()
         for name, layer in layers.items():
-            data = layer.channel.data
-            colored = Renderer.color(data, layer.channel.colormap)
-            rectangle = [
-                slice(layer.offset[0], layer.offset[0] + data.shape[0]),
-                slice(layer.offset[1], layer.offset[1] + data.shape[1])]
-            if iview.use_depth:
-                Renderer.depth_composite(canvas[tuple(rectangle)],
-                                         depth[tuple(rectangle)],
-                                         colored, layer.depth.data)
-            else:
-                canvas = Renderer.paste(canvas, colored, layer.offset)
+            # TODO: fix this loop
+            # The imageview object is intended to provide a way of iterating 
+            # over active layers, but at present this has a bug in it. For
+            # this release, we simply query to determine if the layer is active
+            # and that is correct.
+            if iview.is_active_layer(name):
+                data = layer.channel.data
+                background = np.full((data.shape[0], data.shape[1], 3),
+                                     iview.background, float)
+                foreground = Renderer.color(data, layer.channel.colormap)
+                if iview.use_shadow:
+                    foreground = foreground * \
+                                 layer.shadow.data[:, :, np.newaxis]
+                Renderer.blend(foreground, background, np.isnan(data))
+
+                rectangle = [
+                    slice(layer.offset[0], layer.offset[0] + data.shape[0]),
+                    slice(layer.offset[1], layer.offset[1] + data.shape[1])]
+                if iview.use_depth:
+                    Renderer.depth_composite(canvas[tuple(rectangle)],
+                                             depth[tuple(rectangle)],
+                                             foreground, layer.depth.data)
+                else:
+                    canvas = Renderer.paste(canvas, foreground, layer.offset)
+
         # iview.dims is in row by column rather than x-dims by y-dims,
         # we need to transpose the two axes.
         return canvas.transpose((1, 0, 2)), depth.T
