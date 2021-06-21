@@ -23,4 +23,4 @@ install:
 
 # The build step
 script:
-  - ./travis/run.sh
+  - bash ./travis/run.sh
