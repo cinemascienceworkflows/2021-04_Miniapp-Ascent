@@ -13,5 +13,8 @@ sed -i "s/PANTHEON_BASE_PATH=WarningNotSet/PANTHEON_BASE_PATH=\${HOME}\/pantheon
 # placeholder set compute allocation to NONE, will not be used on travis
 sed -i "s/COMPUTE_ALLOCATION=WarningNotSet/COMPUTE_ALLOCATION=NONE/g" ./bootstrap.env
 
+# see what gcc version is installed
+gcc-6 --version
+
 # execute
 ./execute
