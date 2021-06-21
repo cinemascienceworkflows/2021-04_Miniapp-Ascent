@@ -23,5 +23,6 @@ install:
 
 # The build step
 script:
-    - echo "Placeholder: edit setup files like bootstrap.env"
-    - echo "Placeholder: run"
+    - cd $TRAVIS_BUILD_DIR
+    - ./execute
+    - ls $HOME/pantheon-work/

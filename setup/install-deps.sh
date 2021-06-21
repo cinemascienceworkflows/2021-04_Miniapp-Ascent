@@ -72,7 +72,7 @@ if $INSTALL_ASCENT; then
     echo ----------------------------------------------------------------------
 
     # copy spack settings
-    module load gcc/6.4.0
+    #module load gcc/6.4.0
     cp inputs/spack/spack.yaml $PANTHEON_WORKFLOW_DIR
 
     pushd $PANTHEON_WORKFLOW_DIR > /dev/null 2>&1
@@ -90,6 +90,8 @@ if $INSTALL_ASCENT; then
     PANTHEON_OS=`echo ${PANTHEON_SYSTEM} | sed 's/.*-\(.*\)-.*/\1/g'`
     sed -i "s#<system_os>#$PANTHEON_OS#" spack.yaml
     sed -i "s#<system_arch>#$PANTHEON_ARCH#" spack.yaml
+
+    exit 0
 
     # activate spack and install Ascent
     . spack/share/spack/setup-env.sh
