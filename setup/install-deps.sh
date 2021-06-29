@@ -70,8 +70,10 @@ if $INSTALL_ASCENT; then
     echo ----------------------------------------------------------------------
     echo "PTN: building gcc@6.4.0 ..."
     echo ----------------------------------------------------------------------
+    pushd $PANTHEON_WORKFLOW_DIR > /dev/null 2>&1
     . spack/share/spack/setup-env.sh
     spack install gcc@6.4.0
+    popd > /dev/null 2>&1
 
     echo ----------------------------------------------------------------------
     echo "PTN: building ASCENT ..."
