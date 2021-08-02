@@ -20,7 +20,6 @@ INSTALL_APP=false
 SPACK_COMMIT=3d7069e03954e5a4042d41c27a75dacd33e52696
 SPACK_NAME=e4s_pantheon
 SPACK_CACHE_URL=https://cache.e4s.io 
-SPACK_E4S_PUB_URL=https://oaciss.uoregon.edu/e4s/e4s.pub
 
 # ---------------------------------------------------------------------------
 #
@@ -95,8 +94,7 @@ if $INSTALL_ASCENT; then
     . spack/share/spack/setup-env.sh
     spack -e . concretize -f 2>&1 | tee concretize.log
     spack mirror add $SPACK_NAME $SPACK_CACHE_URL
-    wget $SPACK_E4S_PUB_URL
-    spack gpg trust e4s.pub
+    spack buildcache keys -it
     module load patchelf
 
     if $USE_SPACK_CACHE; then
