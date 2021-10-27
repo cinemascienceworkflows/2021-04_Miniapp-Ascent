@@ -16,7 +16,8 @@ USE_SPACK_CACHE=true
 INSTALL_ASCENT=true
 INSTALL_APP=false
 
-# spack data 
+# spack data
+SPACK_COMPILER_MODULE=gcc/9.3.0
 SPACK_COMMIT=3d7069e03954e5a4042d41c27a75dacd33e52696
 SPACK_NAME=e4s_pantheon
 SPACK_CACHE_URL=https://cache.e4s.io 
@@ -71,13 +72,16 @@ if $INSTALL_ASCENT; then
     echo ----------------------------------------------------------------------
 
     # copy spack settings
-    module load gcc/6.4.0
+    module load ${SPACK_COMPILER_MODULE}
     cp inputs/spack/spack.yaml $PANTHEON_WORKFLOW_DIR
 
     pushd $PANTHEON_WORKFLOW_DIR > /dev/null 2>&1
     # set compiler paths for spac
     # this is done to remove system-specific information from the spack.yaml file
     # which can be easily pulled from the environment during runtime
+    COMPILER_SPEC=`echo ${SPACK_COMPILER_MODULE} | sed 's/\//@/g'`
+    sed -i "s#<system_gcc_spec>#$COMPILER_SPEC#" spack.yaml
+    sed -i "s#<system_gcc_module>#$SPACK_COMPILER_MODULE#" spack.yaml
     COMPILER_LOC=`which gcc`
     sed -i "s#<system_gcc>#$COMPILER_LOC#" spack.yaml
     COMPILER_LOC=`which g++`

@@ -5,7 +5,7 @@ spack:
   - ascent
   compilers:
   - compiler:
-      spec: gcc@6.4.0
+      spec: <system_gcc_spec>
       paths:
         cc:  <system_gcc> 
         cxx: <system_gpp> 
@@ -13,8 +13,7 @@ spack:
         fc:  <system_gfortran> 
       operating_system: <system_os>
       modules:
-      - gcc/6.4.0
-
+      - <system_gcc_module>
       environment:
         unset: []
       extra_rpaths: []
@@ -22,18 +21,18 @@ spack:
     all:
       target: [<system_arch>]
       providers:
-        mpi: [spectrum-mpi@10.3.1]
+        mpi: [spectrum-mpi@10.4.0]
         blas: [openblas]
         lapack: [openblas]
-      compiler: [gcc@6.4.0]
+      compiler: [<system_gcc_spec>]
       version: []
       buildable: true
     cmake:
       buildable: false
       externals:
-      - spec: cmake@3.14.2
+      - spec: cmake@3.21.3
         modules:
-        - cmake/3.14.2
+        - cmake/3.21.3
       version: []
       target: []
       compiler: []
@@ -48,24 +47,14 @@ spack:
       compiler: []
       providers: {}
     spectrum-mpi:
-      version: [10.3.1]
+      version: [10.4.0]
       buildable: false
       externals:
-      - spec: spectrum-mpi@10.3.1
+      - spec: spectrum-mpi@10.4.0
         modules:
-        - spectrum-mpi/10.3.1.2-20200121
+        - spectrum-mpi/10.4.0.3-20210112
       target: []
       compiler: []
-      providers: {}
-    cuda:
-      version: [10.1.168]
-      externals:
-      - spec: cuda@10.1.168
-        modules:
-        - cuda/10.1.168
-      target: []
-      compiler: []
-      buildable: true
       providers: {}
     ascent:
       variants: +openmp+shared~adios~mfem+fortran+test~python+serial+mpi~cuda+vtkh
